@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 class InspectedNodeDict(TypedDict):
     name: str | None
-    tags: Set[str]
+    tags: List[str]
     confirms: List[str]
     namespace: str | None
     inputs: List[str] | Dict[str, str] | str | None
@@ -49,7 +49,7 @@ class InspectedNode:
     def to_dict(self) -> InspectedNodeDict:
         return {
             "name": self.name,
-            "tags": self.tags,
+            "tags": list(self.tags),
             "confirms": self.confirms,
             "namespace": self.namespace,
             "inputs": self.inputs,
@@ -62,7 +62,7 @@ class InspectedNode:
     def from_dict(cls, dct: InspectedNodeDict) -> Self:
         return cls(
             name=dct["name"],
-            tags=dct["tags"],
+            tags=set(dct["tags"]),
             confirms=dct["confirms"],
             namespace=dct["namespace"],
             inputs=dct["inputs"],

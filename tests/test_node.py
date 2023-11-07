@@ -1,7 +1,10 @@
+import json
+
 from kedro.pipeline import node
+from typing_extensions import Any
+
 from kedro_inspect.node import InspectedNode
 from kedro_inspect.node_func import NodeFunction
-from typing_extensions import Any
 
 
 def identity(x) -> Any:
@@ -29,7 +32,7 @@ def test_inspected_node() -> None:
     inspected_node_dict = inspected_node.to_dict()
     assert inspected_node_dict == {
         "name": None,
-        "tags": set(),
+        "tags": [],
         "confirms": [],
         "namespace": None,
         "inputs": ["a"],
@@ -40,3 +43,5 @@ def test_inspected_node() -> None:
 
     inspected_node_from_dict = InspectedNode.from_dict(inspected_node_dict)
     assert inspected_node_from_dict.to_dict() == inspected_node_dict
+
+    assert json.loads(json.dumps(inspected_node_dict)) == inspected_node_dict
