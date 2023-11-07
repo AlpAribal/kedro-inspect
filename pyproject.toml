@@ -10,7 +10,7 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
-dependencies = ["kedro"]
+dependencies = ["kedro", "typing-extensions"]
 dynamic = ["version"]
 
 [tool.setuptools.dynamic]
