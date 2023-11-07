@@ -13,5 +13,8 @@ classifiers = [
 dependencies = ["kedro", "typing-extensions"]
 dynamic = ["version"]
 
+[project.scripts]
+kedro-inspect = "kedro_inspect.cli:main"
+
 [tool.setuptools.dynamic]
 version = { attr = "kedro_inspect.__version__" }
