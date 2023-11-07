@@ -119,3 +119,8 @@ class InspectedNode:
                 assert type(dataset) is str
                 p_to_ds[param] = [dataset]
         return p_to_ds
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, InspectedNode):
+            return NotImplemented
+        return self.to_dict() == __value.to_dict()
