@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from inspect import Parameter
 
 from typing_extensions import Any
@@ -26,6 +27,14 @@ class DummyClass:
 
     @staticmethod
     def static_method(a: int, b: str) -> None: ...
+
+
+@dataclass
+class DummyDataclass:
+    """To be used in tests."""
+
+    a: int
+    b: str
 
 
 def test_argument_to_dict() -> None:
@@ -361,3 +370,39 @@ def test_func_from_unbound_method() -> None:
     assert b.type_hint is str
 
     assert node_func.return_value is type(None)
+
+
+def test_from_dataclass() -> None:
+    node_func = NodeFunction.from_callable(DummyDataclass)
+    assert node_func.func == DummyDataclass
+    assert len(node_func.parameters) == 2
+
+    a, b = node_func.parameters
+    assert isinstance(a, Argument)
+    assert a.name == "a"
+    assert a.kind == Parameter.POSITIONAL_OR_KEYWORD
+    assert a.type_hint is int
+
+    assert isinstance(b, Argument)
+    assert b.name == "b"
+    assert b.kind == Parameter.POSITIONAL_OR_KEYWORD
+    assert b.type_hint is str
+
+    assert node_func.return_value is DummyDataclass
+
+    assert node_func.to_dict() == {
+        "func": "test_node_func.DummyDataclass",
+        "parameters": [
+            {
+                "name": "a",
+                "kind": "POSITIONAL_OR_KEYWORD",
+                "type_hint": "builtins.int",
+            },
+            {
+                "name": "b",
+                "kind": "POSITIONAL_OR_KEYWORD",
+                "type_hint": "builtins.str",
+            },
+        ],
+        "return_value": "test_node_func.DummyDataclass",
+    }
