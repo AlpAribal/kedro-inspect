@@ -24,6 +24,7 @@ def get_type_hints_general(func: Callable) -> Dict[str, Any]:
         typehints["return"] = func
     else:
         typehints = get_type_hints(func)
+
     return typehints
 
 
@@ -90,7 +91,7 @@ class NodeFunction:
     @classmethod
     def from_callable(cls, func: Callable) -> Self:
         sig = inspect.signature(func, follow_wrapped=False)
-        hints = get_type_hints(func)
+        hints = get_type_hints_general(func)
         return cls(
             func=func,
             parameters=[
